@@ -13,7 +13,6 @@ const profileDetailsSchema = new Schema({
   discordHandle: { type: String },
   telegramHandle: { type: String },
   websiteUrl: { type: String },
-
 });
 
 const metricsDetailsSchema = new Schema({
@@ -26,13 +25,13 @@ const metricsDetailsSchema = new Schema({
   percentages: [{ type: Number }],
 });
 
-
 const projectsSchema = new Schema({
   basicDetails: basicDetailsSchema,
   profileDetails: profileDetailsSchema,
   metricsDetails: metricsDetailsSchema,
-  uniqueId: { type: String, unique: true  }, // tokenAddress
-  owner: {type: String},
+  uniqueId: { type: String, unique: true }, // tokenAddress
+  owner: { type: String },
+  status: { type: Number }, // 0 means pending, 1 means approved, 2 means disapproved, 3 means paused 
   entryDate: { type: Date, default: Date.now },
 });
 
@@ -45,8 +44,6 @@ const projectsSchema = new Schema({
 //   }
 //   next();
 // });
-
-
 
 const Projects = mongoose.model("Projects", projectsSchema, "projects");
 

@@ -32,8 +32,6 @@ router.post("/projects/:owner/:uniqueId/:id", async (req, res) => {
         { new: true, upsert: true } // To return the updated document
       );
 
-      console.log("Result: ", result);
-
       res.status(200).json({
         message: "Basic details updated successfully",
         data: result,
@@ -120,11 +118,13 @@ router.post("/projects/:owner/:uniqueId/:id", async (req, res) => {
   } else {
     // Just create a new document having uniqueId = "new". That's all
     const newData = {
-      uniqueId: "new",
+      uniqueId: `new${owner}`,
       owner: owner,
+      status: -1,
       basicDetails: {},
       profileDetails: {},
       metricsDetails: {},
+      
     };
 
     try {
@@ -157,11 +157,11 @@ router.get("/projects/:owner/:uniqueId", async (req, res) => {
       owner: owner,
     });
 
-    if (projectData.length === 0) {
-      return res
-        .status(404)
-        .json({ message: "No project found for the specified creator." });
-    }
+    // if (projectData.length === 0) {
+    //   return res
+    //     .status(404)
+    //     .json({ message: "No project found for the specified creator." });
+    // }
 
     res.status(200).json(projectData);
   } catch (error) {
@@ -179,11 +179,11 @@ router.get("/projects/:owner", async (req, res) => {
     // Use Mongoose to find projects with the specified creator
     const projectData = await projects.find({ owner: owner });
 
-    if (projectData.length === 0) {
-      return res
-        .status(404)
-        .json({ message: "No project found for the specified creator." });
-    }
+    // if (projectData.length === 0) {
+    //   return res
+    //     .status(404)
+    //     .json({ message: "No project found for the specified creator." });
+    // }
 
     res.status(200).json(projectData);
   } catch (error) {
