@@ -4,6 +4,9 @@ const Schema = mongoose.Schema;
 const basicDetailsSchema = new Schema({
   tokenAddress: { type: String },
   treasuryAddress: { type: String },
+  tokenName: { type: String },
+  tokenSymbol: { type: String },
+  tokenDecimal: { type: String },
   description: { type: String },
   imageDataUrl: { type: String },
 });
@@ -31,7 +34,7 @@ const projectsSchema = new Schema({
   metricsDetails: metricsDetailsSchema,
   uniqueId: { type: String, unique: true }, // tokenAddress
   owner: { type: String },
-  status: { type: Number }, // 0 means pending, 1 means approved, 2 means disapproved, 3 means paused 
+  status: { type: Number }, // 0 means pending, 1 means approved, 2 means disapproved, 3 means paused
   entryDate: { type: Date, default: Date.now },
 });
 

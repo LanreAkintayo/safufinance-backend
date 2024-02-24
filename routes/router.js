@@ -14,14 +14,9 @@ router.post("/projects/:owner/:uniqueId/:id", async (req, res) => {
 
   if (id == 0) {
     // This is the basic details
-    const { tokenAddress, treasuryAddress, description, imageDataUrl } =
-      req.body;
 
     const basicData = {
-      tokenAddress,
-      treasuryAddress,
-      description,
-      imageDataUrl,
+      ...req.body,
     };
 
     try {
@@ -124,12 +119,11 @@ router.post("/projects/:owner/:uniqueId/:id", async (req, res) => {
       basicDetails: {},
       profileDetails: {},
       metricsDetails: {},
-      
     };
 
     try {
       const result = await projects.findOneAndUpdate(
-        { uniqueId: uniqueId, owner: owner }, 
+        { uniqueId: uniqueId, owner: owner },
         { $set: newData },
         { new: true, upsert: true } // To return the updated document
       );
@@ -144,6 +138,30 @@ router.post("/projects/:owner/:uniqueId/:id", async (req, res) => {
     }
   }
 });
+
+router.post(
+  "/projects/updateStatus/:owner/:uniqueId/:newStatus",
+  async (req, res) => {
+    const projects = schemas.Projects;
+    const { owner, uniqueId, newStatus } = req.params;
+
+    try {
+      const result = await projects.findOneAndUpdate(
+        { uniqueId: uniqueId, owner: owner },
+        { $set: {status: newStatus} },
+        { new: true, upsert: true } // To return the updated document
+      );
+
+      res.status(200).json({
+        message: "New project created successfully",
+        project: result,
+      });
+    } catch (error) {
+      console.error(error);
+      return res.status(500).json({ message: "Internal Server Error" });
+    }
+  }
+);
 
 router.get("/projects/:owner/:uniqueId", async (req, res) => {
   // const creatorParam = req.params.creator;
